@@ -7,8 +7,14 @@
  * as published by Sam Hocevar. See the LICENSE file for more details.
  */
 
-#if !defined NCCLIB_H
-#define NCCLIB_H
+#if !defined LIBNCC_H
+#define LIBNCC_H
+
+#define ISOC99_SOURCE
+#define _POSIX_C_SOURCE 199309L
+#if __STDC_VERSION__ != 199901L
+#error "ANSI C99 not available"
+#endif
 
 #include <stdbool.h>
 #include <stdio.h>

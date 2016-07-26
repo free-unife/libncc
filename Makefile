@@ -24,7 +24,7 @@ default: libncc
 
 clean:
 	@echo "Removing object files..."
-	@rm -fv *.o *.out *.a
+	@rm -fv *.o *.out *.a *.pdf
 	@echo "Object files removed."
 
 libncc:
@@ -32,6 +32,13 @@ libncc:
 	@mv src/$@.a .
 	@$(MAKE) -C src clean
 
+doc:
+	@$(MAKE) -C $@
+	@mv $@/libncc.pdf .
+
 example: libncc
 	@$(CC) $(INCLUDEDIR) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out example.c libncc.a
 	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out example.c libncc.a"
+
+.PHONY: default libncc doc example
+

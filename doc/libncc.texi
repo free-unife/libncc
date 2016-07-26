@@ -1,0 +1,163 @@
+\input texinfo
+@settitle libncc Manual
+
+@copying
+Copyright @copyright{} 2016 Franco Masotti @email{franco.masotti@@student.unife.it}
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+@end copying
+
+@titlepage
+@title libncc Documentation
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c Output the table of the contents at the beginning.
+@contents
+
+@ifnottex
+@node Top
+@top libncc
+
+This manual is for libncc.
+@end ifnottex
+
+@menu
+* API Description::    A thorough description of the API.
+* Usage::    How to use the library in you program.
+* Library Flags:: Description of all the possibile flags used.
+* Internal Description::    A brief description of the internals.
+* Index::            Complete index.
+@end menu
+
+
+@node API Description
+@chapter API Description
+@comment ----FIX HERE----
+@cindex chapter, first
+
+Everything described in this chapter can be found in @file{/include/libncc.h}.
+
+@section Variable Definitions
+
+@deftp {typedef} _listNode list
+@end deftp
+
+@deftp {typedef} _listNode stack
+@end deftp
+
+@deftp {typedef} _listNode queue
+@end deftp
+
+@section Function Descriptions
+@subsection Functional operations
+
+@deftypefn{List} bool list_null @ (list @var{l})
+Check if a list is @code{NULL}.
+@end deftypefn
+
+@deftypefn{List} element list_car @ (list @var{l})
+Extracts the first element of the list.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} list list_cdr @ (list @var{l})
+Gets the pointer of the next node of a @code{_listNode} object.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} int list_length (list l)
+Returns the length of a @code{_listNode} object.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} bool list_same (list l1, list l2)
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} bool list_equal (list l1, list l2)
+@end deftypefn
+
+@deftypefn{Stack} bool stack_null (stack s)
+@end deftypefn
+
+@deftypefn{Queue} bool queue_null (queue q)
+@end deftypefn
+
+@subsection Mixed operations
+
+@deftypefn{List} list list_cons (element e, list l)
+@end deftypefn
+
+@deftypefn{List} list list_append (list l1, list l2)
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} list list_copy (list l)
+@end deftypefn
+
+@deftypefn{List} list list_reverse (list l)
+@end deftypefn
+
+@deftypefn{List} list list_tailCons (element e, list l)
+@end deftypefn
+
+@subsection Non-functional operations
+
+@deftypefn{List} void list_init @ (list * @var{lRef})
+Sets the input list to @code{NULL}.
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} list list_remove (list * lHeadRef, list toRemove)
+@end deftypefn
+
+@deftypefn{List,Stack,Queue} list list_destroy (list * lRef)
+@end deftypefn
+
+@deftypefn{Stack} void stack_init (stack * sRef)
+@end deftypefn
+
+@deftypefn{Stack} element stack_pop (stack * sRef)
+@end deftypefn
+
+@deftypefn{Stack} void stack_push (element e, stack * sRef)
+@end deftypefn
+
+@deftypefn{Queue} void queue_init (queue * qRef)
+@end deftypefn
+
+@deftypefn{Queue} element queue_dequeue (queue * qRef)
+@end deftypefn
+
+@deftypefn{Queue} void queue_enqueue (element e, queue * qRef)
+@end deftypefn
+
+
+@node Usage
+@chapter Usage
+...
+
+@node Library Flags
+@chapter Library Flags
+@section C Flags
+-g -Wall -Wextra -Wpedantic -Werror -march=native -O0 -lrt -std=c99
+
+@section Indent Flags
+-nbad -bap -nbc -bbo -bl -bli2 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1-n$
+-hnl -i2 -ip5 -lp -pcs -psl -nsc -nsob
+
+@node Internal Description
+@chapter Internal Description
+...
+
+
+@cindex index entry, another
+
+
+
+@node Index
+@unnumbered Index
+
+@printindex cp
+
+@bye
+
