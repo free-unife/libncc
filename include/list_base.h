@@ -23,18 +23,21 @@
 
 typedef elementObject *element;
 
-struct _listNodeObject
+struct __listNodeObject
 {
   element el;
-  struct _listNodeObject *next;
+  struct __listNodeObject *next;
 };
 
-typedef struct _listNodeObject *_listNode;
+typedef struct __listNodeObject *__listNode;
 
-extern bool _list_null (_listNode l);
-extern void _list_init (_listNode * lRef);
-extern element _list_car (_listNode l);
-extern _listNode _list_cdr (_listNode l);
-extern _listNode _list_cons (element e, _listNode l);
+/* Interface for the ADT. */
+typedef __listNode _node;
+
+extern bool __list_null (__listNode l);
+extern void __list_init (__listNode * lRef);
+extern element __list_car (__listNode l);
+extern __listNode __list_cdr (__listNode l);
+extern __listNode __list_cons (element e, __listNode l);
 
 #endif

@@ -17,7 +17,7 @@ int main (void)
     int n = 5;
     int i;
     int *arr = malloc (sizeof (int) * n);
-    list l, head;
+    list l;
     stack s;
     queue q;
 
@@ -30,28 +30,25 @@ int main (void)
     for (i = 0; i < n; i++)
     {
         arr[i] = i;
-        l = list_cons (arr + i, l);
+
+        /* You can test both append and prepend functions here. */
+        list_append (arr + i, &l);
         stack_push (arr + i, &s);
         queue_enqueue (arr + i, &q);
         fprintf (stderr, "Lengths = %d, %d, %d\n", list_length (l), 
 list_length (s), list_length (q));
     }
 
-    head = l;
-
     while (!list_null (l) || !stack_null (s) || !queue_null (q))
     {
-        fprintf (stderr, "%d ", *(list_car (l)));
-        l = list_cdr (l);
+        fprintf (stderr, "%d ", *(list_head (l)));
+        list_remove (&l, l);
         fprintf (stderr, "%d ", *(stack_pop (&s)));
         fprintf (stderr, "%d ", *(queue_dequeue (&q)));
         fprintf (stderr, "\n");
     }
 
     fprintf (stderr, "\n");
-
-    /* Lists need to be freed manually. */
-    list_destroy (&head);
 
     free (arr);
 

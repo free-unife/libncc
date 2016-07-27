@@ -13,6 +13,7 @@
 && make list_extended TEST_TYPE=SIMPLE_TEST \
 && make stack TEST_TYPE=SIMPLE_TEST \
 && make queue TEST_TYPE=SIMPLE_TEST \
+&& make list TEST_TYPE=SIMPLE_TEST \
 && make api TEST_TYPE=SIMPLE_TEST \
 && make clean; } \
 && { make list_extended TEST_TYPE=EXTENDED_TEST \

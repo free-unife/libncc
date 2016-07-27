@@ -11,35 +11,35 @@
 #include "list_base.h"
 
 bool
-_list_null (_listNode l)
+__list_null (__listNode l)
 {
   return (l == EMPTYLIST);
 }
 
 void
-_list_init (_listNode * lRef)
+__list_init (__listNode * lRef)
 {
   *lRef = EMPTYLIST;
 }
 
 element
-_list_car (_listNode l)
+__list_car (__listNode l)
 {
-  assert (!_list_null (l));
+  assert (!__list_null (l));
   return l->el;
 }
 
-_listNode
-_list_cdr (_listNode l)
+__listNode
+__list_cdr (__listNode l)
 {
-  assert (!_list_null (l));
+  assert (!__list_null (l));
   return l->next;
 }
 
-_listNode
-_list_cons (element e, _listNode l)
+__listNode
+__list_cons (element e, __listNode l)
 {
-  _listNode n = malloc_safe (sizeof (struct _listNodeObject));
+  __listNode n = malloc_safe (sizeof (struct __listNodeObject));
 
   n->el = e;
   n->next = l;

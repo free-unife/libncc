@@ -9,6 +9,7 @@
 
 #include "list_base.h"
 #include "list_extended.h"
+#include "list.h"
 #include "libncc.h"
 #include "queue.h"
 #include "stack.h"
@@ -37,16 +38,16 @@ int
 main (void)
 {
   int *aPointer, *bPointer, theSourceZero = 10, theSourceOne = 28;
-  _listNode l = NULL;
+  __listNode l = NULL;
 
   aPointer = &theSourceZero;
-  l = _list_cons (aPointer, l);
+  l = __list_cons (aPointer, l);
 
   bPointer = &theSourceOne;
-  l = _list_cons (bPointer, l);
+  l = __list_cons (bPointer, l);
 
-  assert (_list_car (l) == bPointer);
-  assert (_list_car (_list_cdr (l)) == aPointer);
+  assert (__list_car (l) == bPointer);
+  assert (__list_car (__list_cdr (l)) == aPointer);
 
   /* Dummy. */
   array_set (0);
@@ -56,38 +57,29 @@ main (void)
 
 
 #elif defined LIST_EXTENDED_C
-static _listNode fakeList_new (int length, int *arr, char action);
-static void fakeList_print (_listNode this);
+static __listNode fakeList_new (int length, int *arr);
+static void fakeList_print (__listNode this);
 
-static _listNode
-fakeList_new (int length, int *arr, char action)
+static __listNode
+fakeList_new (int length, int *arr)
 {
   int i;
-  _listNode this, that;
+  __listNode this;
 
-  _list_init (&this);
+  __list_init (&this);
   for (i = 0; i < length; i++)
-    {
-      if (action == 'h')
-	this = _list_cons ((arr + i), this);
-      else if (action == 't')
-	{
-	  that = _list_tailCons ((arr + i), this);
-	  _list_destroy (&this);
-	  this = that;
-	}
-    }
+	this = __list_cons ((arr + i), this);
 
   return this;
 }
 
 static void
-fakeList_print (_listNode this)
+fakeList_print (__listNode this)
 {
-  while (!_list_null (this))
+  while (!__list_null (this))
     {
-      fprintf (stderr, "%d ", *(_list_car (this)));
-      this = _list_cdr (this);
+      fprintf (stderr, "%d ", *(__list_car (this)));
+      this = __list_cdr (this);
     }
   fprintf (stderr, "\n");
 }
@@ -97,54 +89,33 @@ main (void)
 {
   int i;
   int *arr;
-  _listNode this, tmp, that;
+  __listNode this, tmp;
 
   for (i = 0; i <= n; i++)
     {
-      /* Allocation of an int array corresponding to _listNode -> el. */
+      /* Allocation of an int array corresponding to __listNode -> el. */
       arr = array_set (i);
 
       /* Create a list and remove an element. */
-      _list_init (&this);
-      this = fakeList_new (i, arr, 'h');
+      __list_init (&this);
+      this = fakeList_new (i, arr);
       fakeList_print (this);
-      assert (_list_length (this) == i);
+      assert (__list_length (this) == i);
       if (i >= 2)
 	{
-	  _list_remove (&this, this);
-	  assert (_list_length (this) == i - 1);
+	  __list_remove (&this, this);
+	  assert (__list_length (this) == i - 1);
 	}
-      _list_destroy (&this);
+      __list_destroy (&this);
 
       /* State that given a same input, the two generated lists are equal. */
-      _list_init (&this);
-      _list_init (&tmp);
-      this = fakeList_new (i, arr, 'h');
-      tmp = fakeList_new (i, arr, 'h');
-      assert (_list_equal (this, tmp));
-      _list_destroy (&this);
-      _list_destroy (&tmp);
-
-      this = fakeList_new (i, arr, 't');
-      tmp = fakeList_new (i, arr, 't');
-      _list_init (&that);
-      that = _list_append (this, tmp);
-      assert (_list_length (that) ==
-	      _list_length (this) + _list_length (tmp));
-      _list_destroy (&this);
-      _list_destroy (&tmp);
-      _list_destroy (&that);
-
-      _list_init (&this);
-      _list_init (&that);
-      _list_init (&tmp);
-      that = _list_reverse (this);
-      tmp = _list_reverse (that);
-      assert (_list_equal (this, tmp));
-      _list_destroy (&this);
-      _list_destroy (&that);
-      _list_destroy (&tmp);
-
+      __list_init (&this);
+      __list_init (&tmp);
+      this = fakeList_new (i, arr);
+      tmp = fakeList_new (i, arr);
+      assert (__list_equal (this, tmp));
+      __list_destroy (&this);
+      __list_destroy (&tmp);
 
       free (arr);
     }
@@ -153,11 +124,11 @@ main (void)
 }
 
 #elif defined STACK_C
-static void fakeStack_new (int length, int *arr, _listNode * sRef);
-static void fakeStack_print (_listNode * this);
+static void fakeStack_new (int length, int *arr, _node * sRef);
+static void fakeStack_print (_node * this);
 
 static void
-fakeStack_new (int length, int *arr, _listNode * sRef)
+fakeStack_new (int length, int *arr, _node * sRef)
 {
   int i;
 
@@ -166,7 +137,7 @@ fakeStack_new (int length, int *arr, _listNode * sRef)
 }
 
 static void
-fakeStack_print (_listNode * this)
+fakeStack_print (_node * this)
 {
   while (!_stack_null (*this))
     fprintf (stderr, "%d ", *(_stack_pop (this)));
@@ -179,7 +150,7 @@ main (void)
 {
   int i;
   int *arr;
-  _listNode s;
+  _node s;
 
   for (i = 0; i <= n; i++)
     {
@@ -196,11 +167,11 @@ main (void)
 }
 
 #elif defined QUEUE_C
-static void fakeQueue_new (int length, int *arr, _listNode * qRef);
-static void fakeQueue_print (_listNode * this);
+static void fakeQueue_new (int length, int *arr, _node * qRef);
+static void fakeQueue_print (_node * this);
 
 static void
-fakeQueue_new (int length, int *arr, _listNode * qRef)
+fakeQueue_new (int length, int *arr, _node * qRef)
 {
   int i;
 
@@ -209,7 +180,7 @@ fakeQueue_new (int length, int *arr, _listNode * qRef)
 }
 
 static void
-fakeQueue_print (_listNode * this)
+fakeQueue_print (_node * this)
 {
   while (!_queue_null (*this))
     fprintf (stderr, "%d ", *(_queue_dequeue (this)));
@@ -222,7 +193,7 @@ main (void)
 {
   int i;
   int *arr;
-  _listNode q;
+  _node q;
 
   for (i = 0; i <= n; i++)
     {
@@ -231,6 +202,59 @@ main (void)
       fakeQueue_new (i, arr, &q);
       fakeQueue_print (&q);
       assert (_queue_null (q));
+
+      free (arr);
+    }
+
+  return 0;
+}
+
+#elif defined LIST_C
+static void fakeList_new (int length, int *arr, _node * lRef);
+static void fakeList_print (_node this);
+
+static void
+fakeList_new (int length, int *arr, _node * lRef)
+{
+  int i;
+
+  for (i = 0; i < length; i++)
+    {
+    _list_prepend ((arr + i), lRef);
+    _list_append ((arr + i), lRef);
+    }
+}
+
+static void
+fakeList_print (_node this)
+{
+
+  while (!_list_null (this))
+  {
+    fprintf (stderr, "%d ", *(_list_head (this)));
+    this = _list_next (this);
+  }
+
+  fprintf (stderr, "\n");
+}
+
+int
+main (void)
+{
+  int i;
+  int *arr;
+  _node l;
+
+  for (i = 0; i <= n; i++)
+    {
+      arr = array_set (i);
+      _list_init (&l);
+      fakeList_new (i, arr, &l);
+      fakeList_print (l);
+
+      _list_destroy (&l);
+
+      assert (_list_null (l));
 
       free (arr);
     }
@@ -257,7 +281,7 @@ main (void)
 
       for (j = 0; j < i; j++)
 	{
-	  l = list_cons (arr + j, l);
+	  list_append (arr + j, &l);
 	  stack_push (arr + j, &s);
 	  queue_enqueue (arr + j, &q);
 	}
@@ -269,7 +293,7 @@ main (void)
       lHead = &l;
       for (j = 0; j < i; j++)
 	{
-	  *lHead = list_remove (lHead, *lHead);
+	  list_remove (lHead, *lHead);
 	  stack_pop (&s);
 	  queue_dequeue (&q);
 	}
@@ -326,47 +350,47 @@ array_clean (struct VertexObject ***vArr, int length)
 }
 
 #if defined LIST_EXTENDED_C
-static _listNode fakeList_new (int length, struct VertexObject **vArr);
-static _listNode fakeList_search (_listNode l, char *color);
-static void fakeList_print (_listNode this);
+static __listNode fakeList_new (int length, struct VertexObject **vArr);
+static __listNode fakeList_search (__listNode l, char *color);
+static void fakeList_print (__listNode this);
 
-static _listNode
+static __listNode
 fakeList_new (int length, struct VertexObject **vArr)
 {
   int i;
-  _listNode this;
+  __listNode this;
 
-  _list_init (&this);
+  __list_init (&this);
   for (i = 0; i < length; i++)
-    this = _list_cons (vArr[i], this);
+    this = __list_cons (vArr[i], this);
 
   return this;
 }
 
-/* Return a list of all the _listNodes with the input colour. */
-static _listNode
-fakeList_search (_listNode l, char *color)
+/* Return a list of all the __listNodes with the input colour. */
+static __listNode
+fakeList_search (__listNode l, char *color)
 {
-  _listNode head;
+  __listNode head;
 
-  _list_init (&head);
-  while (!_list_null (l))
+  __list_init (&head);
+  while (!__list_null (l))
     {
       if (strcmp (l->el->color, color) == 0)
-	head = _list_cons (_list_car (l), head);
-      l = _list_cdr (l);
+	head = __list_cons (__list_car (l), head);
+      l = __list_cdr (l);
     }
 
   return head;
 }
 
 static void
-fakeList_print (_listNode this)
+fakeList_print (__listNode this)
 {
-  while (!_list_null (this))
+  while (!__list_null (this))
     {
-      fprintf (stderr, "%d ", (_list_car (this))->id);
-      this = _list_cdr (this);
+      fprintf (stderr, "%d ", (__list_car (this))->id);
+      this = __list_cdr (this);
     }
   fprintf (stderr, "\n");
 }
@@ -376,22 +400,22 @@ main (void)
 {
   int i;
   struct VertexObject **vArr;
-  _listNode this, that;
+  __listNode this, that;
 
   for (i = 0; i <= n; i++)
     {
       vArr = array_new (i);
 
-      _list_init (&this);
+      __list_init (&this);
       fakeList_print (this);
-      _list_init (&that);
+      __list_init (&that);
       this = fakeList_new (i, vArr);
       that = fakeList_search (this, "WHITE");
-      assert ((_list_length (this) == _list_length (that) * 2)
-	      || (_list_length (this) == (_list_length (that) * 2) - 1));
+      assert ((__list_length (this) == __list_length (that) * 2)
+	      || (__list_length (this) == (__list_length (that) * 2) - 1));
 
-      _list_destroy (&that);
-      _list_destroy (&this);
+      __list_destroy (&that);
+      __list_destroy (&this);
       array_clean (&vArr, i);
     }
 
@@ -399,13 +423,13 @@ main (void)
 }
 #elif defined STACK_C
 static void fakeStack_new (int length, struct VertexObject **vArr,
-			   _listNode * sRef);
-static void fakeStack_search (_listNode * sRef, _listNode * nRef,
+			   _node * sRef);
+static void fakeStack_search (_node * sRef, _node * nRef,
 			      char *color);
-static void fakeStack_print (_listNode * sRef);
+static void fakeStack_print (_node * sRef);
 
 static void
-fakeStack_new (int length, struct VertexObject **vArr, _listNode * sRef)
+fakeStack_new (int length, struct VertexObject **vArr, _node * sRef)
 {
   int i;
 
@@ -413,9 +437,9 @@ fakeStack_new (int length, struct VertexObject **vArr, _listNode * sRef)
     _stack_push (vArr[i], sRef);
 }
 
-/* Return a list of all the _listNodes with the input colour. */
+/* Return a list of all the _nodes with the input colour. */
 static void
-fakeStack_search (_listNode * sRef, _listNode * nRef, char *color)
+fakeStack_search (_node * sRef, _node * nRef, char *color)
 {
   element el;
 
@@ -428,7 +452,7 @@ fakeStack_search (_listNode * sRef, _listNode * nRef, char *color)
 }
 
 static void
-fakeStack_print (_listNode * sRef)
+fakeStack_print (_node * sRef)
 {
   element el;
 
@@ -451,7 +475,7 @@ main (void)
 {
   int i;
   struct VertexObject **vArr;
-  _listNode s, newStack;
+  _node s, newStack;
 
   for (i = 0; i <= n; i++)
     {
@@ -461,7 +485,7 @@ main (void)
       fakeStack_new (i, vArr, &s);
       fakeStack_search (&s, &newStack, "WHITE");
       assert (_stack_null (s));
-      assert (_list_length (newStack) <= i);
+      assert (__list_length (newStack) <= i);
       fakeStack_print (&newStack);
 
       array_clean (&vArr, i);
@@ -471,13 +495,13 @@ main (void)
 }
 #elif defined QUEUE_C
 static void fakeQueue_new (int length, struct VertexObject **vArr,
-			   _listNode * qRef);
-static void fakeQueue_search (_listNode * qRef, _listNode * nRef,
+			   _node * qRef);
+static void fakeQueue_search (_node * qRef, _node * nRef,
 			      char *color);
-static void fakeQueue_print (_listNode * qRef);
+static void fakeQueue_print (_node * qRef);
 
 static void
-fakeQueue_new (int length, struct VertexObject **vArr, _listNode * qRef)
+fakeQueue_new (int length, struct VertexObject **vArr, _node * qRef)
 {
   int i;
 
@@ -485,9 +509,9 @@ fakeQueue_new (int length, struct VertexObject **vArr, _listNode * qRef)
     _queue_enqueue (vArr[i], qRef);
 }
 
-/* Return a list of all the _listNodes with the input colour. */
+/* Return a list of all the _nodes with the input colour. */
 static void
-fakeQueue_search (_listNode * qRef, _listNode * nRef, char *color)
+fakeQueue_search (_node * qRef, _node * nRef, char *color)
 {
   element el;
 
@@ -500,7 +524,7 @@ fakeQueue_search (_listNode * qRef, _listNode * nRef, char *color)
 }
 
 static void
-fakeQueue_print (_listNode * qRef)
+fakeQueue_print (_node * qRef)
 {
   element el;
 
@@ -523,7 +547,7 @@ main (void)
 {
   int i;
   struct VertexObject **vArr;
-  _listNode q, newQueue;
+  _node q, newQueue;
 
   for (i = 0; i <= n; i++)
     {
@@ -533,7 +557,7 @@ main (void)
       fakeQueue_new (i, vArr, &q);
       fakeQueue_search (&q, &newQueue, "WHITE");
       assert (_queue_null (q));
-      assert (_list_length (newQueue) <= i);
+      assert (__list_length (newQueue) <= i);
       fakeQueue_print (&newQueue);
 
       array_clean (&vArr, i);

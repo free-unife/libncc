@@ -10,9 +10,9 @@
 #if !defined STACK_H
 #define STACK_H
 
-extern bool _stack_null (_listNode s);
-extern void _stack_init (_listNode * sRef);
-extern element _stack_pop (_listNode * sRef);
-extern void _stack_push (element e, _listNode * sRef);
+extern bool _stack_null (_node s);
+extern void _stack_init (_node * sRef);
+extern element _stack_pop (_node * sRef);
+extern void _stack_push (element e, _node * sRef);
 
 #endif

@@ -9,88 +9,59 @@
 
 #include "libncc.h"
 
-bool
-list_null (list l)
+bool list_null (list l)
 {
-  return (_list_null (l));
+    return (_list_null (l));
 }
 
-void
-list_init (list * lRef)
+void list_init (list *lRef)
 {
-  _list_init (lRef);
+    _list_init (lRef);
 }
 
-element
-list_car (list l)
+void list_append (element e, list *lRef)
 {
-  return (_list_car (l));
+    _list_append (e, lRef);
 }
 
-list
-list_cdr (list l)
+void list_prepend (element e, list *lRef)
 {
-  return (_list_cdr (l));
+    _list_prepend (e, lRef);
 }
 
-list
-list_cons (element e, list l)
+element list_head (list l)
 {
-  return (_list_cons (e, l));
+    return (_list_head (l));
 }
 
-list
-list_append (list l1, list l2)
+list list_next (list l)
 {
-  return (_list_append (l1, l2));
+    return (_list_next (l));
 }
 
-list
-list_copy (list l)
+int list_length (list l)
 {
-  return (_list_copy (l));
+    return (_list_length (l));
 }
 
-list
-list_reverse (list l)
+bool list_same (list l1, list l2)
 {
-  return (_list_reverse (l));
+    return (_list_same (l1, l2));
 }
 
-int
-list_length (list l)
+bool list_equal (list l1, list l2)
 {
-  return (_list_length (l));
+    return (_list_equal (l1, l2));
 }
 
-list
-list_tailCons (element e, list l)
+void list_remove (list *head, list toRemove)
 {
-  return (_list_tailCons (e, l));
+    _list_remove (head, toRemove);
 }
 
-bool
-list_same (list l1, list l2)
+void list_destroy (list *lRef)
 {
-  return (_list_same (l1, l2));
-}
-
-bool
-list_equal (list l1, list l2)
-{
-  return (_list_equal (l1, l2));
-}
-
-list
-list_remove (list * lHeadRef, list toRemove)
-{
-  return (_list_remove (lHeadRef, toRemove));
-}
-
-list
-list_destroy (list * lRef)
-{
-  return (_list_destroy (lRef));
+    list_destroy (lRef);
 }
 
 bool
@@ -117,6 +88,12 @@ stack_push (element e, stack * sRef)
   _stack_push (e, sRef);
 }
 
+int
+stack_length (stack s)
+{
+  return (_list_length (s));
+}
+
 bool
 queue_null (queue q)
 {
@@ -139,4 +116,10 @@ void
 queue_enqueue (element e, queue * qRef)
 {
   _queue_enqueue (e, qRef);
+}
+
+int
+queue_length (queue q)
+{
+  return (_list_length (q));
 }

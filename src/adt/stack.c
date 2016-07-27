@@ -11,29 +11,29 @@
 #include "list_extended.h"
 
 bool
-_stack_null (_listNode s)
+_stack_null (_node s)
 {
-  return (_list_null (s));
+  return (__list_null (s));
 }
 
 void
-_stack_init (_listNode * sRef)
+_stack_init (_node * sRef)
 {
-  _list_init (sRef);
+  __list_init (sRef);
 }
 
 element
-_stack_pop (_listNode * sRef)
+_stack_pop (_node * sRef)
 {
-  element e = _list_car (*sRef);
+  element e = __list_car (*sRef);
 
-  *sRef = _list_remove (sRef, *sRef);
+  *sRef = __list_remove (sRef, *sRef);
 
   return e;
 }
 
 void
-_stack_push (element e, _listNode * sRef)
+_stack_push (element e, _node * sRef)
 {
-  *sRef = _list_cons (e, *sRef);
+  *sRef = __list_cons (e, *sRef);
 }

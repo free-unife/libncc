@@ -14,13 +14,13 @@
 #include <stdio.h>
 #include <string.h>
 
-extern _listNode _list_append (_listNode l1, _listNode l2);
-extern _listNode _list_copy (_listNode l);
-extern _listNode _list_reverse (_listNode l);
-extern int _list_length (_listNode l);
-extern _listNode _list_tailCons (element e, _listNode l);
-extern bool _list_same (_listNode l1, _listNode l2);
-extern bool _list_equal (_listNode l1, _listNode l2);
-extern _listNode _list_remove (_listNode * lHeadRef, _listNode toRemove);
-extern _listNode _list_destroy (_listNode * lRef);
+extern __listNode __list_append (__listNode l1, __listNode l2);
+extern __listNode __list_copy (__listNode l);
+extern __listNode __list_reverse (__listNode l);
+extern int __list_length (__listNode l);
+extern __listNode __list_tailCons (element e, __listNode l);
+extern bool __list_same (__listNode l1, __listNode l2);
+extern bool __list_equal (__listNode l1, __listNode l2);
+extern __listNode __list_remove (__listNode * lHeadRef, __listNode toRemove);
+extern __listNode __list_destroy (__listNode * lRef);
 #endif
