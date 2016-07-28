@@ -30,13 +30,11 @@ This manual is for libncc.
 * Description::    A brief description of what this is all about.
 * API Description::    A thorough description of the API.
 * Usage::    How to use the library in you program.
-* Library Flags:: Description of all the possibile flags used.
-* Internal Description::    A brief description of the internals.
-* Index::            Complete index.
 @end menu
 
 @node Description
 @chapter Description
+@section About
 libncc is a static C library which provides data structures and operations to 
 handle:
 @itemize @bullet
@@ -50,8 +48,64 @@ stacks
 queues
 
 @end itemize
-This library is based on the LISPs' functional list functions. From those 
-functions more complex operations to handle stack and queues can be written.
+It is based on the four LISPs' list functions:
+@itemize @bullet
+@item
+null
+
+@item
+car
+
+@item
+cons
+
+@item
+cdr
+
+@end itemize
+
+@section Internals
+@subsection Directories
+
+@itemize @bullet
+@item
+@file{/src/private} contains basic operations and @acronym{CDT, Concrete Data 
+Types}.
+
+@item
+@file{/src/adt} contains functions that provide higher lever operations. These 
+operations are called @acronym{ADT, Abstract Data Types}.
+
+@item
+@file{/src/public} contains operations visible to the end user. These 
+operations are called @acronym{API , Application Programming Interface}.
+
+@end itemize
+
+
+@subsection Test modules
+All test modules are collected in the @file{/src/test.c} file. You can run all 
+the test modules with @command{cd src && ./runTests.sh} or by calling the 
+@file{src/Makefile} targets manually.
+
+Whenever a test module is compiled, this is automatically checked for errors 
+thanks to the @file{src/validate.sh} script.
+
+To auto-indent all C files, you can simply @command{cd src && make indent}.
+
+@subsection C Flags
+
+This library is written in ANSI C99. 
+Compilation flags follow:
+
+@option{-g -Wall -Wextra -Wpedantic -Werror -march=native -O0 -lrt -std=c99}
+
+@subsection Indent Flags
+
+GNU indentation options have been used:
+
+@option{-nbad -bap -nbc -bbo -bl -bli2 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1-nfca -hnl -i2 -ip5 -lp -pcs -psl -nsc -nsob}
+
 
 @node API Description
 @chapter API Description
@@ -169,29 +223,32 @@ Adds an element from the queue.
 @verbatiminclude example.c
 
 @section Building and Linking
+@subsection Building
 
-To build the static library into the `libncc.a` file:
+To build the static library into the @file{libncc.a} file you should use the 
+@file{Makefile}
 
 @command{make libncc TYPE=@var{typedef struct or native C type}}
 
-To link the library:
+For example if you want to use @code{int *} as elements your command should be:
 
-@code{gcc -o example.out example.c libncc.a}
+@command{make libncc TYPE=@var{int}}
 
-@node Library Flags
-@chapter Library Flags
-@section C Flags
+This means that you cannot pass explicit pointers.
 
-This library is written in ANSI C99. 
-Compilation flags follow:
+Another example: if you want to link @code{struct @var{something} *}, somewhere 
+in you code, you should have @code{typedef struct @var{something} @var{smt};}
 
-@option{-g -Wall -Wextra -Wpedantic -Werror -march=native -O0 -lrt -std=c99}
+You can then run:
 
-@section Indent Flags
+@command{make libncc TYPE=@var{smt}}
 
-GNU indentation options have been used:
+@subsection Linking
 
-@option{-nbad -bap -nbc -bbo -bl -bli2 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1-nfca -hnl -i2 -ip5 -lp -pcs -psl -nsc -nsob}
+To link the library you can either run the following command or modify the 
+@file{Makefile} directly. A possible command could be:
+
+@command{gcc -o example.out example.c libncc.a}
 
 @bye
 
