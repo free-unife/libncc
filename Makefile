@@ -10,21 +10,15 @@
 #
 
 # Recipe
-# make libncc TYPE=<C type>
+# make libncc TYPE=<native C type || struct\ smt>
 
 TYPE=int
-CC = /usr/bin/gcc
-INCLUDEDIR = -Iinclude
-CFLAGS = -g -Wall -Wextra -Wpedantic -Werror -march=native -O0
-LIBS = -lrt
-CSTANDARD = -std=c99
-DEFFLAG = -DelementObject=$(TYPE)
 
 default: libncc
 
 clean:
 	@echo "Removing object files..."
-	@rm -fv *.o *.out *.a *.pdf
+	@rm -fv *.o *.out *.a
 	@echo "Object files removed."
 
 libncc:
@@ -36,9 +30,10 @@ doc:
 	@$(MAKE) -C $@
 	@mv $@/libncc.pdf .
 
-example: libncc
-	@$(CC) $(INCLUDEDIR) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out example.c libncc.a
-	@echo "$(CC) $(CFLAGS) $(CSTANDARD) $(DEFFLAG) $(LIBS) -o $@.out example.c libncc.a"
+example:
+	@$(MAKE) -C $@
+	@mv $@/$@.out .
+	@$(MAKE) -C $@ clean
 
 .PHONY: default libncc doc example
 

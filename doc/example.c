@@ -1,1 +1,1 @@
-../example.c
+../example/example.c

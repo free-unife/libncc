@@ -95,7 +95,7 @@ To auto-indent all C files, you can simply @command{cd src && make indent}.
 
 @subsection C Flags
 
-This library is written in ANSI C99. 
+This library is written using the ISO C99 standard.
 Compilation flags follow:
 
 @option{-g -Wall -Wextra -Wpedantic -Werror -march=native -O0 -lrt -std=c99}
@@ -220,7 +220,10 @@ Adds an element from the queue.
 @chapter Usage
 @section Example
 
+@verbatiminclude example.h
+
 @verbatiminclude example.c
+
 
 @section Building and Linking
 @subsection Building
@@ -228,27 +231,43 @@ Adds an element from the queue.
 To build the static library into the @file{libncc.a} file you should use the 
 @file{Makefile}
 
-@command{make libncc TYPE=@var{typedef struct or native C type}}
+@command{make libncc TYPE=@var{native C type}}
 
 For example if you want to use @code{int *} as elements your command should be:
 
 @command{make libncc TYPE=@var{int}}
 
-This means that you cannot pass explicit pointers.
-
 Another example: if you want to link @code{struct @var{something} *}, somewhere 
-in you code, you should have @code{typedef struct @var{something} @var{smt};}
+in you code, you should have a definition of that structure
 
-You can then run:
+@code{struct @var{something} @{ ... @};}
 
-@command{make libncc TYPE=@var{smt}}
+However, you cannot run the following because the structure definition remains 
+unkown:
+
+@command{make libncc TYPE="@var{struct\ something}"}
+
+Anyway, you can use structures in the linking phase.
 
 @subsection Linking
 
 To link the library you can either run the following command or modify the 
-@file{Makefile} directly. A possible command could be:
+example @file{Makefile} directly. A possible command could be:
 
 @command{gcc -o example.out example.c libncc.a}
+
+As an example, you can run @command{make example}, which uses the 
+@option{TYPE="struct\ example"} option.
+
+@verbatiminclude Makefile.example
+
+This is possible thanks to opaque structure definition. It only works if you 
+compile and link the library and you program simultaneously.
+
+If you want to do a simpler linking, you must edit the library directly, just 
+like what has been done for the test modules. For more information see 
+@file{/include/list_base.h} and @file{/include/test_struct.h}.
+
 
 @bye
 

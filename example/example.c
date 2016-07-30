@@ -11,15 +11,17 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "libncc.h"
+#include "example.h"
 
 int main (void)
 {
     int n = 5;
     int i;
-    int *arr = malloc (sizeof (int) * n);
+    ex *arr = malloc (sizeof (struct example) * n);
     list l;
     stack s;
     queue q;
+    char h[6] = {'h', 'a', 'l', 'l', 'o', '\0'};
 
     list_init (&l);
     stack_init (&s);
@@ -29,7 +31,8 @@ int main (void)
 
     for (i = 0; i < n; i++)
     {
-        arr[i] = i;
+        arr[i].aChar = malloc (sizeof (char) * 10);
+        sprintf (arr[i].aChar, "%s:%d", h, i);
 
         /* You can test both append and prepend functions here. */
         list_append (arr + i, &l);
@@ -41,15 +44,17 @@ list_length (s), list_length (q));
 
     while (!list_null (l) || !stack_null (s) || !queue_null (q))
     {
-        fprintf (stderr, "%d ", *(list_head (l)));
+        fprintf (stderr, "%s ", (*(list_head (l))).aChar);
         list_remove (&l, l);
-        fprintf (stderr, "%d ", *(stack_pop (&s)));
-        fprintf (stderr, "%d ", *(queue_dequeue (&q)));
+        fprintf (stderr, "%s ", (*(stack_pop (&s))).aChar);
+        fprintf (stderr, "%s ", (*(queue_dequeue (&q))).aChar);
         fprintf (stderr, "\n");
     }
 
     fprintf (stderr, "\n");
 
+    for (i = 0; i < n; i++)
+        free (arr[i].aChar);
     free (arr);
 
     return 0;

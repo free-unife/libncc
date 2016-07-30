@@ -1,12 +1,6 @@
 # libncc
-Null Cons Cdr C library. This static ANSI C99 library handles lists, stack and 
+Null Cons Cdr C library. This static ISO C99 library handles lists, stack and 
 queues.
-
-## Usage
-```
-$ make libncc TYPE=<typedefed struct or native C type (no *notation)>
-```
-This builds the static library into the `libncc.a` file.
 
 ## Example
 ```
