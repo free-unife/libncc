@@ -31,9 +31,9 @@ doc:
 	@mv $@/libncc.pdf .
 
 example:
-	@$(MAKE) -C $@
-	@mv $@/$@.out .
-	@$(MAKE) -C $@ clean
+	@$(MAKE) -C $@/src
+	@mv $@/src/$@.out .
+	@$(MAKE) -C $@/src clean
 
 .PHONY: default libncc doc example
 

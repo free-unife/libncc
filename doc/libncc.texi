@@ -262,7 +262,9 @@ As an example, you can run @command{make example}, which uses the
 @verbatiminclude Makefile.example
 
 This is possible thanks to opaque structure definition. It only works if you 
-compile and link the library and you program simultaneously.
+compile and link the library and you program simultaneously@footnote{Due to 
+visibility problems you must put the @file{libncc.a} file directive at the end 
+of the target, as shown in the example.}.
 
 If you want to do a simpler linking, you must edit the library directly, just 
 like what has been done for the test modules. For more information see 

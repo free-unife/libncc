@@ -31,7 +31,7 @@ int main (void)
 
     for (i = 0; i < n; i++)
     {
-        arr[i].aChar = malloc (sizeof (char) * 10);
+        arr[i].aChar = malloc (sizeof (char) * n);
         sprintf (arr[i].aChar, "%s:%d", h, i);
 
         /* You can test both append and prepend functions here. */

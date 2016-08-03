@@ -61,7 +61,7 @@ void list_remove (list *head, list toRemove)
 
 void list_destroy (list *lRef)
 {
-    list_destroy (lRef);
+    _list_destroy (lRef);
 }
 
 bool
